@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<header th:fragment="header" class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder" sec:authorize="hasAuthority('ROLE_ADMIN')">쇼핑몰 프로젝트(관리자)</h1>
+            <h1 class="display-4 fw-bolder" sec:authorize="hasAuthority('ROLE_USER')">쇼핑몰 프로젝트</h1>
+            <h1 class="display-4 fw-bolder" sec:authorize="isAnonymous">쇼핑몰 프로젝트</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Spring Boot / JPA / H2 / ThymeLeaf / BootStrap</p>
+        </div>
+    </div>
+</header>
+</body>
+</html>

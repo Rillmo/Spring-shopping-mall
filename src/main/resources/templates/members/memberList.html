@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/layout}">
+
+<div layout:fragment="content" class="container my-3">
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/css/bootstrap.css" rel="stylesheet" />
+
+
+    <style>
+        td {
+            word-break:break-all;word-wrap:break-word;
+            }
+    </style>
+
+    <!-- 제목 -->
+    <div class="my-3 border-bottom">
+        <div>
+            <h4>회원 목록</h4>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead class="table-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">이름</th>
+            <th scope="col">아이디</th>
+            <th scope="col">이메일</th>
+            <th scope="col">전화번호</th>
+            <th scope="col">가입일자</th>
+            <th scope="col">최종수정일자</th>
+            <th scope="col">설정</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="member : ${members}">
+            <th scope="row" th:text="${member.id}"></th>
+            <td th:text="${member.name}"></td>
+            <td th:text="${member.userId}"></td>
+            <td th:text="${member.email}"></td>
+            <td th:text="${member.phoneNum}"></td>
+            <td th:text="${member.joinDate}"></td>
+            <td th:text="${member.finalUpdateDate}"></td>
+            <td>
+                <div class="d-grid gap-2 d-md-block">
+                    <a th:href="@{/members/{id}/update (id=${member.id})}"
+                       class="btn btn-primary" type="button">수정</a>
+                    <a th:href="@{/members/{id}/delete (id=${member.id})}"
+                       class="btn btn-primary" type="button">삭제</a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</html>

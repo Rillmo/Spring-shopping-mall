@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/layout}">
+
+<div layout:fragment="content" class="container my-3">
+    <div class="my-3 border-bottom">
+        <div>
+            <h4>회원 수정</h4>
+        </div>
+    </div>
+    <form th:object="${memberForm}" th:action="@{/members/{id}/update (id=*{id})}" method="post" class="row g-3 needs-validation" novalidate>
+        <input type="hidden" th:field="*{id}"/>
+        <div class="col-md-4">
+            <label for="validationCustom01" class="form-label">이름</label>
+            <input type="text" th:field="*{name}" class="form-control" id="validationCustom01" placeholder="홍길동" required>
+        </div>
+        <div class="col-md-4">
+            <label for="validationCustom01" class="form-label">ID</label>
+            <input type="text" th:field="*{userId}" class="form-control" id="validationCustom04" required>
+        </div>
+        <div class="col-md-4">
+            <label for="validationCustomUsername" class="form-label">이메일</label>
+            <div class="input-group has-validation">
+                <span class="input-group-text" id="inputGroupPrepend">@</span>
+                <input type="text" class="form-control" th:field="*{email}" id="validationCustomUsername" aria-describedby="inputGroupPrepend">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label for="validationCustom05" class="form-label">전화번호</label>
+            <input type="text" th:field="*{phoneNum}" class="form-control" id="validationCustom05"
+                   oninput="hypenTel(this)" maxlength="13">
+        </div>
+        <div class="col-12">
+            <button class="btn btn-primary" type="submit">수정</button>
+        </div>
+    </form>
+
+    <script>
+        (() => {
+          'use strict'
+
+          // Fetch all the forms we want to apply custom Bootstrap validation styles to
+          const forms = document.querySelectorAll('.needs-validation')
+
+          // Loop over them and prevent submission
+          Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+              if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+              }
+
+              form.classList.add('was-validated')
+            }, false)
+          })
+        })()
+
+        const hypenTel = (target) => {
+            target.value = target.value
+            .replace(/[^0-9]/g, '')
+            .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+        }
+    </script>
+</div>
+
+</html>
+

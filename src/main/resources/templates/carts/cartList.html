@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/layout}">
+
+<div layout:fragment="content" class="container my-3">
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/css/bootstrap.css" rel="stylesheet"/>
+
+
+    <style>
+        td {
+            word-break:break-all;word-wrap:break-word;
+            }
+        #custom1,#custom2{
+            --bs-btn-color: #fff;
+            --bs-btn-bg: #6c757d;
+            --bs-btn-border-color: #6c757d;
+            --bs-btn-hover-color: #fff;
+            --bs-btn-hover-bg: #5c636a;
+            --bs-btn-hover-border-color: #565e64;
+            --bs-btn-focus-shadow-rgb: 130,138,145;
+            --bs-btn-active-color: #fff;
+            --bs-btn-active-bg: #565e64;
+            --bs-btn-active-border-color: #51585e;
+            --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+            --bs-btn-disabled-color: #fff;
+            --bs-btn-disabled-bg: #6c757d;
+            --bs-btn-disabled-border-color: #6c757d;
+        }
+
+    </style>
+
+    <div>
+        <tr/>
+        <div th:style="${errMessage == '재고부족' ? 'display=block' : 'display:none'}" class="alert alert-danger"
+             role="alert">
+            [[${errItem}]]의 재고가 부족합니다.
+        </div>
+        <div th:style="${errMessage == '장바구니내용없음' ? 'display=block' : 'display:none'}" class="alert alert-danger"
+             role="alert">
+            장바구니가 비었습니다.
+        </div>
+
+        <!-- 제목 -->
+        <div class="my-3 border-bottom">
+            <div>
+                <h4>장바구니</h4>
+            </div>
+        </div>
+
+        <table class="table">
+            <thead class="table-light">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">상품명</th>
+                <th scope="col">상품상세</th>
+                <th scope="col">상품등급</th>
+                <th scope="col">담은날짜</th>
+                <th scope="col">수량</th>
+                <th scope="col">가격</th>
+                <th scope="col">
+                    <a th:href="@{/cart/deleteAll}" type="button" class="btn btn-primary"
+                       style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">전체삭제</a>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="cartDetail : ${cartDetails}">
+                <th scope="row" th:text="${cartDetailStat.count}"></th>
+                <td th:text="${cartDetail.item.name}"></td>
+                <td style="width:28%" th:text="${cartDetail.item.detail}"></td>
+                <td th:text="${cartDetail.item.grade}"></td>
+                <td th:text="${cartDetail.createDate}"></td>
+                <td>
+                    <a type="button" class="btn btn-primary" id="custom1"
+                       th:href="@{/cart/{id}/add (id=*{cartDetail.item.id})}"
+                       style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                        +
+                    </a>
+                    [[${cartDetail.count}]]
+                    <a type="button" class="btn btn-primary" id="custom2"
+                       th:href="@{/cart/{id}/subtract (id=*{cartDetail.item.id})}"
+                       style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                        -
+                    </a>
+                </td>
+                <td data-th-text="${#numbers.formatInteger(cartDetail.item.price * cartDetail.count, 3, 'COMMA') + '₩'}"></td>
+                <td>
+                    <div class="d-grid gap-2 d-md-block">
+                        <a th:href="@{/cart/{id}/delete (id=*{cartDetail.id})}" type="button" class="btn btn-primary"
+                           style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">삭제</a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-1">
+                    <a th:href="@{/}"
+                       class="btn btn-primary" type="button">추가</a>
+                </div>
+                <div class="col-7"></div>
+                <div class="col-3" data-th-text="${'총 결제금액 : ' + #numbers.formatInteger(totalPrice, 3, 'COMMA') + '₩'}"></div>
+                <div class="col-1">
+                    <a th:href="@{/order/makeOrder}"
+                       class="btn btn-primary" type="button">주문</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</html>

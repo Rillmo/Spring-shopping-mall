@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/layout}">
+
+<div layout:fragment="content" class="container my-3">
+    <div class="my-3 border-bottom">
+        <div>
+            <h4>상품 수정</h4>
+        </div>
+    </div>
+    <form th:object="${itemForm}" th:action="@{/items/{id}/update (id=*{id})}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">상품명</span>
+            <input type="text" th:field="*{name}" class="form-control" placeholder="최대 20자" aria-label="Username" aria-describedby="basic-addon1" required>
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">재고수량</span>
+            <input type="text" th:field="*{stockQuantity}" class="form-control" aria-label="Amount (to the nearest dollar)" required>
+            <span class="input-group-text">개</span>
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">가격</span>
+            <input type="text" th:field="*{price}" class="form-control" aria-label="Amount (to the nearest dollar)" required>
+            <span class="input-group-text">₩</span>
+        </div>
+
+        <div class="input-group" style="margin-bottom:16px">
+            <span class="input-group-text">상품 상세</span>
+            <textarea class="form-control" th:field="*{detail}" placeholder="최대 20자" style="min-height: calc(5em + 5rem + 2px)" aria-label="With textarea"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="formFile" class="form-label" style="padding-left:5px">상품 등급</label>
+            <div>
+                <div class="form-check form-check-inline" style="margin-left:20px;">
+                    <input th:field="*{grade}" class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value=1>
+                    <label class="form-check-label" for="inlineRadio1">1</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input th:field="*{grade}" class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value=2>
+                    <label class="form-check-label" for="inlineRadio2">2</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input  th:field="*{grade}" class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value=3>
+                    <label class="form-check-label" for="inlineRadio3">3</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input  th:field="*{grade}" class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value=4>
+                    <label class="form-check-label" for="inlineRadio3">4</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input  th:field="*{grade}" class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value=5>
+                    <label class="form-check-label" for="inlineRadio3">5</label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mb-3">
+            <label for="formFile" class="form-label" style="padding-left:5px">* 상품 사진(미구현)</label>
+            <input class="form-control" type="file" id="formFile">
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">수정</button>
+        </div>
+    </form>
+
+    <script>
+        (() => {
+          'use strict'
+
+          // Fetch all the forms we want to apply custom Bootstrap validation styles to
+          const forms = document.querySelectorAll('.needs-validation')
+
+          // Loop over them and prevent submission
+          Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+              if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+              }
+
+              form.classList.add('was-validated')
+            }, false)
+          })
+        })()
+
+        function comma(str) {
+        str = String(str);
+        return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+        }
+
+        function uncomma(str) {
+            str = String(str);
+            return str.replace(/[^\d]+/g, '');
+        }
+
+        function inputNumberFormat(obj) {
+            obj.value = comma(uncomma(obj.value));
+        }
+
+        function inputOnlyNumberFormat(obj) {
+            obj.value = onlynumber(uncomma(obj.value));
+        }
+
+        function onlynumber(str) {
+            str = String(str);
+            return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g,'$1');
+        }
+    </script>
+</div>
+
+</html>
+
